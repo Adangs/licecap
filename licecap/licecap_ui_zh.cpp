@@ -161,25 +161,24 @@ static void licecap_translate_window(HWND hwnd)
   if (translated != value && strcmp(value, translated)) LICEcapSetWindowText(hwnd, translated);
 }
 
+#ifdef _WIN32
+static BOOL CALLBACK licecap_localize_child(HWND hwnd, LPARAM, LPARAM)
+{
+  licecap_translate_window(hwnd);
+  return TRUE;
+}
+#else
+static BOOL licecap_localize_child(HWND hwnd, LPARAM)
+{
+  licecap_translate_window(hwnd);
+  return TRUE;
+}
+#endif
+
 static void LICEcapLocalizeWindow(HWND hwnd)
 {
   licecap_translate_window(hwnd);
-  EnumChildWindows(
-    hwnd,
-#ifdef _WIN32
-    (WNDENUMPROC)[](HWND child, LPARAM, LPARAM) -> BOOL
-    {
-      licecap_translate_window(child);
-      return TRUE;
-    },
-#else
-    [](HWND child, LPARAM) -> BOOL
-    {
-      licecap_translate_window(child);
-      return TRUE;
-    },
-#endif
-    0);
+  EnumChildWindows(hwnd, licecap_localize_child, 0);
 }
 
 void LICEcapLocalizeDialog(HWND hwnd)
