@@ -35,6 +35,7 @@ jobs:
             -project licecap/licecap.xcodeproj \
             -configuration Release \
             -target licecap \
+            MACOSX_DEPLOYMENT_TARGET=10.13 \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
             build
