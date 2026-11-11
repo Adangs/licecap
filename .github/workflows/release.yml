@@ -135,6 +135,7 @@ jobs:
       - name: Create release
         run: |
           set -euo pipefail
+          cd artifacts
           version="${GITHUB_REF_NAME#v}"
           assets=(
             LICEcap-macOS.zip
