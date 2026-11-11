@@ -153,18 +153,37 @@ void LICEcapSetWindowText(HWND hwnd, const char *text)
 #endif
 }
 
-static BOOL licecap_localize_child(HWND hwnd, LPARAM)
+static void licecap_translate_window(HWND hwnd)
 {
   char value[512];
   GetWindowText(hwnd, value, sizeof(value));
   const char *translated = LICEcapText(value);
   if (translated != value && strcmp(value, translated)) LICEcapSetWindowText(hwnd, translated);
-  return TRUE;
+}
+
+static void LICEcapLocalizeWindow(HWND hwnd)
+{
+  licecap_translate_window(hwnd);
+  EnumChildWindows(
+    hwnd,
+#ifdef _WIN32
+    (WNDENUMPROC)[](HWND child, LPARAM, LPARAM) -> BOOL
+    {
+      licecap_translate_window(child);
+      return TRUE;
+    },
+#else
+    [](HWND child, LPARAM) -> BOOL
+    {
+      licecap_translate_window(child);
+      return TRUE;
+    },
+#endif
+    0);
 }
 
 void LICEcapLocalizeDialog(HWND hwnd)
 {
   if (!LICEcapUseChinese()) return;
-  licecap_localize_child(hwnd, 0);
-  EnumChildWindows(hwnd, licecap_localize_child, 0);
+  LICEcapLocalizeWindow(hwnd);
 }
