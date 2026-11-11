@@ -46,6 +46,25 @@ xcodebuild -project licecap/licecap.xcodeproj -configuration Release build
 msbuild licecap\licecap\licecap.vcxproj /p:Configuration=Release /p:Platform=x64
 ```
 
+如果使用 Visual Studio 2019/2022，可以在命令行覆盖工具集：
+
+```powershell
+msbuild licecap\licecap\licecap.vcxproj /p:Configuration=Release /p:Platform=x64 /p:PlatformToolset=v143
+```
+
+## 发布
+
+推送 `v*` 格式的 tag（例如 `v1.32.1`）会触发 `.github/workflows/release.yml`。workflow 会构建 macOS ZIP 和 Windows x64/x86 ZIP，计算 SHA-256，并自动创建 GitHub Release。
+
+```sh
+git tag v1.32.1
+git push origin v1.32.1
+```
+
+也可以在 GitHub Actions 的 **Release** 页面手动触发。CI 产物不会进行 macOS 公证或 Windows 代码签名；第一次打开时可能需要通过系统安全设置确认。macOS ZIP 目前只是未签名应用包的 ZIP，不是原始工程脚本生成的 DMG。
+
+GitHub Actions 使用 macOS 15 和当前 Windows 托管镜像。macOS 构建按 target 执行，不依赖共享 scheme；Windows CI 会把工程的旧 `v120` 工具集覆盖为 `v143`。
+
 ## 使用
 
 1. 启动 `licecap`，拖动半透明捕获窗口覆盖目标区域。
