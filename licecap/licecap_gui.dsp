@@ -291,6 +291,10 @@ SOURCE=..\WDL\wingui\wndsize.cpp
 
 SOURCE=.\licecap_ui.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\licecap_ui_zh.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 

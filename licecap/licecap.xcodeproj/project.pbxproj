@@ -21,6 +21,7 @@
 		332A9B2513CB584E00EBEB86 /* swellappmain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 332A9B1A13CB584E00EBEB86 /* swellappmain.mm */; };
 		332A9B2C13CB587700EBEB86 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 332A9B2B13CB587700EBEB86 /* Carbon.framework */; };
 		332A9B4013CB596200EBEB86 /* licecap_ui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332A9B3F13CB596200EBEB86 /* licecap_ui.cpp */; };
+		332A9B4113CB596200EBEB86 /* licecap_ui_zh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332A9B4F13CB596200EBEB86 /* licecap_ui_zh.cpp */; };
 		332A9B9413CB5B0000EBEB86 /* lice_arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332A9B8613CB5B0000EBEB86 /* lice_arc.cpp */; };
 		332A9B9513CB5B0000EBEB86 /* lice_colorspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332A9B8813CB5B0000EBEB86 /* lice_colorspace.cpp */; };
 		332A9B9613CB5B0000EBEB86 /* lice_gif_write.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 332A9B8B13CB5B0000EBEB86 /* lice_gif_write.cpp */; };
@@ -86,6 +87,7 @@
 		332A9B1A13CB584E00EBEB86 /* swellappmain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = swellappmain.mm; path = ../WDL/swell/swellappmain.mm; sourceTree = SOURCE_ROOT; };
 		332A9B2B13CB587700EBEB86 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		332A9B3F13CB596200EBEB86 /* licecap_ui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = licecap_ui.cpp; sourceTree = "<group>"; };
+		332A9B4F13CB596200EBEB86 /* licecap_ui_zh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = licecap_ui_zh.cpp; sourceTree = "<group>"; };
 		332A9B8613CB5B0000EBEB86 /* lice_arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_arc.cpp; path = ../WDL/lice/lice_arc.cpp; sourceTree = SOURCE_ROOT; };
 		332A9B8713CB5B0000EBEB86 /* lice_bezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lice_bezier.h; path = ../WDL/lice/lice_bezier.h; sourceTree = SOURCE_ROOT; };
 		332A9B8813CB5B0000EBEB86 /* lice_colorspace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_colorspace.cpp; path = ../WDL/lice/lice_colorspace.cpp; sourceTree = SOURCE_ROOT; };
@@ -203,6 +205,7 @@
 			children = (
 				332A9BD313CB5B5900EBEB86 /* WDL */,
 				332A9B3F13CB596200EBEB86 /* licecap_ui.cpp */,
+				332A9B4F13CB596200EBEB86 /* licecap_ui_zh.cpp */,
 				256AC3F00F4B6AF500CF3369 /* licecap_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				332A9CA813CB829300EBEB86 /* capturewindow.mm */,
@@ -429,6 +432,7 @@
 				332A9B2413CB584E00EBEB86 /* swell.cpp in Sources */,
 				332A9B2513CB584E00EBEB86 /* swellappmain.mm in Sources */,
 				332A9B4013CB596200EBEB86 /* licecap_ui.cpp in Sources */,
+				332A9B4113CB596200EBEB86 /* licecap_ui_zh.cpp in Sources */,
 				332A9B9413CB5B0000EBEB86 /* lice_arc.cpp in Sources */,
 				332A9B9513CB5B0000EBEB86 /* lice_colorspace.cpp in Sources */,
 				332A9B9613CB5B0000EBEB86 /* lice_gif_write.cpp in Sources */,

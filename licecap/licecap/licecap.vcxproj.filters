@@ -30,6 +30,9 @@
     <ClCompile Include="..\licecap_ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\licecap_ui_zh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\WDL\filebrowse.cpp">
       <Filter>Source Files\WDL</Filter>
     </ClCompile>

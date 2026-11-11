@@ -77,6 +77,7 @@
 #include "licecap_version.h"
 
 #include "resource.h"
+#include "licecap_ui_lang.h"
 
 HINSTANCE g_hInst;
 
@@ -562,11 +563,11 @@ void UpdateStatusText(HWND hwndDlg)
   const DWORD now=timeGetTime();
   if (g_cap_state==1 && g_cap_prerolluntil)
   {
-    if (WDL_TICKS_IN_RANGE_ENDING_AT(now,g_cap_prerolluntil,MAX_PREROLL_OR_DELAY)) snprintf(pbuf,sizeof(pbuf),"PREROLL: %d - ",(g_cap_prerolluntil-now+999)/1000);
+    if (WDL_TICKS_IN_RANGE_ENDING_AT(now,g_cap_prerolluntil,MAX_PREROLL_OR_DELAY)) snprintf(pbuf,sizeof(pbuf),LICEcapText("PREROLL: %d - "),(g_cap_prerolluntil-now+999)/1000);
   }
   else if (g_cap_state == 2) 
   {
-    strcpy(pbuf,"Paused - ");
+    strcpy(pbuf,LICEcapText("Paused - "));
   }
   snprintf(buf,sizeof(buf),"%s%s",pbuf,dims);
 
@@ -588,13 +589,13 @@ void UpdateStatusText(HWND hwndDlg)
   }
   if (g_cap_state && g_frate_valid)
   {   
-    snprintf_append(buf,sizeof(buf)," @ %.1ffps" ,g_frate_avg);
+    snprintf_append(buf,sizeof(buf),LICEcapText(" @ %.1ffps") ,g_frate_avg);
   }
 
   GetDlgItemText(hwndDlg,IDC_STATUS,oldtext,sizeof(oldtext));
   if (strcmp(buf,oldtext))
   {
-    SetDlgItemText(hwndDlg,IDC_STATUS,buf);
+    LICEcapSetDlgItemText(hwndDlg,IDC_STATUS,buf);
   }
 }
 
@@ -604,9 +605,13 @@ void UpdateCaption(HWND hwndDlg)
   if (!g_cap_state) 
   {
 #ifdef REAPER_LICECAP
-    SetWindowText(hwndDlg,"REAPER_LICEcap " LICECAP_VERSION " [stopped]");
+    char stopped_title[256];
+    snprintf(stopped_title,sizeof(stopped_title),"REAPER_LICEcap %s%s",LICECAP_VERSION,LICEcapText(" [stopped]"));
+    LICEcapSetWindowText(hwndDlg,stopped_title);
 #else
-    SetWindowText(hwndDlg,"LICEcap " LICECAP_VERSION " [stopped]");
+    char stopped_title[256];
+    snprintf(stopped_title,sizeof(stopped_title),"LICEcap %s%s",LICECAP_VERSION,LICEcapText(" [stopped]"));
+    LICEcapSetWindowText(hwndDlg,stopped_title);
 #endif
   }
   else
@@ -620,12 +625,12 @@ void UpdateCaption(HWND hwndDlg)
       const DWORD now=timeGetTime();
       if (WDL_TICKS_IN_RANGE_ENDING_AT(now,g_cap_prerolluntil,MAX_PREROLL_OR_DELAY))
       {
-        snprintf(pbuf,sizeof(pbuf),"PREROLL: %d - ",(g_cap_prerolluntil-now+999)/1000);
+        snprintf(pbuf,sizeof(pbuf),LICEcapText("PREROLL: %d - "),(g_cap_prerolluntil-now+999)/1000);
       }
       else g_cap_prerolluntil=0;
     }
-    snprintf(buf,sizeof(buf),"%s%.100s - LICEcap%s",pbuf,p,pbuf[0]?"":g_cap_state==1?" [recording]":" [paused]");
-    SetWindowText(hwndDlg,buf);
+    snprintf(buf,sizeof(buf),"%s%.100s - LICEcap%s",pbuf,p,pbuf[0]?"":g_cap_state==1?LICEcapText(" [recording]"):LICEcapText(" [paused]"));
+    LICEcapSetWindowText(hwndDlg,buf);
   }
 }
 
@@ -655,7 +660,7 @@ void SWELL_SetWindowResizeable(HWND, bool);
 
 void Capture_Finish(HWND hwndDlg)
 {
-  SetDlgItemText(hwndDlg,IDC_REC,"Record...");
+  LICEcapSetDlgItemText(hwndDlg,IDC_REC,LICEcapText("Record..."));
   EnableWindow(GetDlgItem(hwndDlg,IDC_STOP),0);
 
   if (g_cap_state)
@@ -731,6 +736,7 @@ WDL_DLGRET VideoOptionsProc(HWND hwndDlg, UINT Message, WPARAM wParam, LPARAM lP
   {
   case WM_INITDIALOG:
     {
+      LICEcapLocalizeDialog(hwndDlg);
       SetDlgItemInt(hwndDlg, IDC_EDIT1, g_cap_video_vbr, FALSE);
       SetDlgItemInt(hwndDlg, IDC_EDIT2, g_cap_video_abr, FALSE);
     }
@@ -764,6 +770,7 @@ static UINT_PTR CALLBACK SaveOptsProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPA
   {
     case WM_INITDIALOG:
     {
+      LICEcapLocalizeDialog(hwndDlg);
       //ShowWindow(GetDlgItem(hwndDlg, IDC_TIMELINE), SW_HIDE);
       if (g_prefs&1) CheckDlgButton(hwndDlg, IDC_TITLEUSE, BST_CHECKED);
       if (g_prefs&2) CheckDlgButton(hwndDlg, IDC_BIGFONT, BST_CHECKED);
@@ -788,7 +795,7 @@ static UINT_PTR CALLBACK SaveOptsProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPA
       snprintf(buf, sizeof(buf), "%.1f", (double)g_stop_after_msec/1000.0);
       SetDlgItemText(hwndDlg, IDC_STOPAFTER_SEC, buf);
 
-      SetDlgItemText(hwndDlg, IDC_TITLE, (g_title[0] ? g_title : "Title"));
+      LICEcapSetDlgItemText(hwndDlg, IDC_TITLE, (g_title[0] ? g_title : LICEcapText("Title")));
       EnableWindow(GetDlgItem(hwndDlg, IDC_MS), (g_prefs&1));
       EnableWindow(GetDlgItem(hwndDlg, IDC_BIGFONT), (g_prefs&1));
       EnableWindow(GetDlgItem(hwndDlg, IDC_TITLE), (g_prefs&1));
@@ -817,7 +824,7 @@ static UINT_PTR CALLBACK SaveOptsProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPA
       g_stop_after_msec=(int) (atof(buf)*1000.0);
 
       GetDlgItemText(hwndDlg, IDC_TITLE, g_title, sizeof(g_title));
-      if (!strcmp(g_title, "Title")) g_title[0]=0;
+      if (!strcmp(g_title, "Title") || !strcmp(g_title, LICEcapText("Title"))) g_title[0]=0;
 
       {
         BOOL t=FALSE;
@@ -989,9 +996,10 @@ WDL_DLGRET InsertProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
     case WM_INITDIALOG :
 		  {
+        LICEcapLocalizeDialog(hwnd);
         char buf[256];
-        sprintf(buf,"Insert (%d)",g_insert_cnt);
-        SetDlgItemText(hwnd,IDOK,buf);
+        snprintf(buf,sizeof(buf),LICEcapText("Insert (%d)"),g_insert_cnt);
+        LICEcapSetDlgItemText(hwnd,IDOK,buf);
         snprintf(buf, sizeof(buf), "%.1f", (double)g_insert_ms/1000.0);
         SetDlgItemText(hwnd, IDC_MS, buf);
         snprintf(buf, sizeof(buf), "%.1f", g_insert_alpha);
@@ -1026,8 +1034,8 @@ WDL_DLGRET InsertProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
             GetDlgItemText(hwnd,IDC_EDIT,buf,4096);
 				    WriteTextFrame(buf,g_insert_ms,g_insert_alpha<0,g_cap_bm_txt->getWidth(),g_cap_bm_txt->getHeight(), g_insert_alpha >=0 ? g_insert_alpha : 1.0f);
 				    g_insert_cnt++;
-				    sprintf(buf,"Insert (%d)",g_insert_cnt);
-            SetDlgItemText(hwnd,IDOK,buf);
+				    snprintf(buf,sizeof(buf),LICEcapText("Insert (%d)"),g_insert_cnt);
+            LICEcapSetDlgItemText(hwnd,IDOK,buf);
             SetDlgItemText(hwnd,IDC_EDIT,"");
             SetFocus(GetDlgItem(hwnd,IDC_EDIT));
           }
@@ -1160,6 +1168,7 @@ static WDL_DLGRET liceCapMainProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
       g_cap_video_abr = GetPrivateProfileInt("licecap", "video_abr", g_cap_video_abr, g_ini_file.Get());
 #endif
 
+      LICEcapLocalizeDialog(hwndDlg);
     return 1;
     case WM_DESTROY:
 
@@ -1703,7 +1712,7 @@ static WDL_DLGRET liceCapMainProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
 #endif
 #endif
 
-                SetDlgItemText(hwndDlg,IDC_REC,"[pause]");
+                LICEcapSetDlgItemText(hwndDlg,IDC_REC,LICEcapText("[pause]"));
                 EnableWindow(GetDlgItem(hwndDlg,IDC_STOP),1);
 
                 g_frate_valid=false;
@@ -1723,7 +1732,7 @@ static WDL_DLGRET liceCapMainProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             g_pause_time = timeGetTime();
             ShowWindow(GetDlgItem(hwndDlg, IDC_INSERT), SW_SHOWNA);
             ShowWindow(GetDlgItem(hwndDlg,IDC_STATUS),SW_HIDE);
-            SetDlgItemText(hwndDlg,IDC_REC,"[unpause]");
+            LICEcapSetDlgItemText(hwndDlg,IDC_REC,LICEcapText("[unpause]"));
             g_cap_state=2;
             UpdateCaption(hwndDlg);
             UpdateStatusText(hwndDlg);
@@ -1735,7 +1744,7 @@ static WDL_DLGRET liceCapMainProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             g_insert_cnt=0;
             ShowWindow(GetDlgItem(hwndDlg,IDC_STATUS),SW_SHOWNA);
             ShowWindow(GetDlgItem(hwndDlg, IDC_INSERT), SW_HIDE);
-            SetDlgItemText(hwndDlg,IDC_REC,"[pause]");
+            LICEcapSetDlgItemText(hwndDlg,IDC_REC,LICEcapText("[pause]"));
             g_last_frame_capture_time = g_cap_prerolluntil=timeGetTime()+PREROLL_AMT;
             g_cap_state=1;
             UpdateCaption(hwndDlg);

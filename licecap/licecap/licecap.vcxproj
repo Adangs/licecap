@@ -48,6 +48,7 @@
     <ClCompile Include="..\..\WDL\zlib\trees.c" />
     <ClCompile Include="..\..\WDL\zlib\zutil.c" />
     <ClCompile Include="..\licecap_ui.cpp" />
+    <ClCompile Include="..\licecap_ui_zh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\WDL\filebrowse.h" />
