@@ -38,6 +38,7 @@ jobs:
             MACOSX_DEPLOYMENT_TARGET=10.13 \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
+            SYMROOT="$GITHUB_WORKSPACE/build" \
             build
 
       - name: Package
